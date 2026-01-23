@@ -1,2 +1,3 @@
-# my-routine
-내 루틴 만들기 어플
+# My Routine
+
+루틴 만들기 앱
