@@ -81,7 +81,6 @@ export function useHabit() {
    */
   const deleteSelectedHabits = async () => {
     if (selectedIds.length === 0) return;
-
     // 선택되지 않은 습관만 남김
     Alert.alert(
       "루틴 삭제",
@@ -95,7 +94,7 @@ export function useHabit() {
             const updated = habits.filter((h) => !selectedIds.includes(h.id));
             setHabits(updated);
             setSelectedIds([]);
-            setIsEditMode(false); // 삭제 후 삭제 모드 해제
+            setIsEditMode(false);
 
             await AsyncStorage.setItem("habits", JSON.stringify(updated));
           },
