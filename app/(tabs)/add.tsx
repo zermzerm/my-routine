@@ -1,10 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {useRouter} from "expo-router";
-import {useState} from "react";
+import { useRouter } from "expo-router";
+import { useState } from "react";
 import styled from "styled-components/native";
 
 import PrimaryButton from "@/components/PrimaryButton";
-import {Habit} from "@/types/Habit";
+import { Habit } from "@/types/Habit";
 
 export default function AddScreen() {
   const [text, setText] = useState("");
@@ -37,7 +37,13 @@ export default function AddScreen() {
 
   return (
     <Container>
-      <Input placeholder="새 루틴 입력" value={text} onChangeText={setText} />
+      <Input
+        autoFocus
+        placeholder="새 루틴 입력"
+        value={text}
+        onChangeText={setText}
+        onSubmitEditing={addHabit}
+      />
       <PrimaryButton title="저장" onPress={addHabit} />
     </Container>
   );
@@ -49,7 +55,7 @@ const Container = styled.View`
 `;
 
 const Input = styled.TextInput`
-  border: 1px solid ${({theme}) => theme.border};
+  border: 1px solid ${({ theme }) => theme.border};
   background-color: white;
   padding: 12px;
   border-radius: 8px;
