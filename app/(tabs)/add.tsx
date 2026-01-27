@@ -1,14 +1,17 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRouter } from "expo-router";
-import { useState } from "react";
+import {useRouter} from "expo-router";
+import {useState} from "react";
 import styled from "styled-components/native";
 
 import PrimaryButton from "@/components/PrimaryButton";
-import { Habit } from "@/types/Habit";
+import {Habit} from "@/types/Habit";
+import dayjs from "dayjs";
 
 export default function AddScreen() {
   const [text, setText] = useState("");
   const router = useRouter();
+
+  const today = dayjs().format("YYYY-MM-DD");
 
   const addHabit = async () => {
     if (!text) return;
@@ -23,9 +26,9 @@ export default function AddScreen() {
         {
           id: Date.now(),
           title: text,
-          startDate: new Date().toISOString(),
-          streak: 7,
-          lastCalculatedDate: "",
+          startDate: today,
+          streak: 1,
+          lastCalculatedDate: today,
           resetHistory: [],
         },
       ]),
@@ -55,7 +58,7 @@ const Container = styled.View`
 `;
 
 const Input = styled.TextInput`
-  border: 1px solid ${({ theme }) => theme.border};
+  border: 1px solid ${({theme}) => theme.border};
   background-color: white;
   padding: 12px;
   border-radius: 8px;
