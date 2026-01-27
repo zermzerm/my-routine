@@ -19,7 +19,7 @@ export default function HabitItem({habit, isEditMode, selected, onPress}: Props)
 }
 
 const Title = styled.Text`
-  color: #111827;
+  color: ${({theme}) => theme.text};
 `;
 
 const Item = styled.TouchableOpacity<{isEditMode: boolean; selected: boolean}>`
@@ -28,11 +28,12 @@ const Item = styled.TouchableOpacity<{isEditMode: boolean; selected: boolean}>`
   justify-content: space-between;
   padding: 14px;
   border-radius: 8px;
+
   background-color: ${({selected, isEditMode, theme}) => {
     if (isEditMode) {
-      return selected ? theme.primaryLight : theme.background;
+      return selected ? theme.primaryLight : theme.subBackground;
     }
-    return theme.background;
+    return theme.subBackground;
   }};
 
   border: 1px solid

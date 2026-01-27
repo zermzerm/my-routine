@@ -55,6 +55,7 @@ export default function AddScreen() {
 const Container = styled.View`
   flex: 1;
   padding: 16px;
+  background-color: ${({theme}) => theme.background};
 `;
 
 const Input = styled.TextInput`

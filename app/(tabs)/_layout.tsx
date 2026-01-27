@@ -1,17 +1,27 @@
 import {Ionicons} from "@expo/vector-icons";
 import {Tabs} from "expo-router";
+import {useTheme} from "styled-components/native";
 
 export default function TabLayout() {
+  const theme = useTheme();
   return (
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          height: 56, // 높이 키우기
-          backgroundColor: "#fff",
-          borderTopColor: "#e5e7eb",
+          height: 70, // 탭 높이 키우기
+          backgroundColor: theme.tab,
+          borderTopColor: theme.border,
         },
+        headerStyle: {
+          backgroundColor: theme.header,
+        },
+        headerTintColor: theme.text,
+        headerTitleStyle: {
+          fontWeight: "600",
+        },
+        tabBarActiveTintColor: theme.text,
+        tabBarInactiveTintColor: theme.subText,
         headerShown: true,
-        tabBarActiveTintColor: "#2563eb",
       }}
     >
       <Tabs.Screen

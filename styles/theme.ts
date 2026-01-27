@@ -1,20 +1,28 @@
 export const lightTheme = {
-  background: "#ffffff",
+  background: "#f2f2f2",
+  subBackground: "#ffffff",
   primary: "#2563eb",
-  text: "#111827",
   gray: "#9ca3af",
-  border: "#e5e7eb",
   disabled: "#a1a1aa",
   primaryLight: "#dbeafe",
+  text: "#000000",
+  subText: "#666666",
+  header: "#ffffff",
+  tab: "#ffffff",
+  border: "#eeeeee",
 };
 
 export const darkTheme = {
   background: "#1f2937",
-  primary: "#3b82f6",
-  text: "#ffffff",
+  subBackground: "#414b65",
+  primary: "#053ec2",
   gray: "#9ca3af",
-  border: "#374151",
   disabled: "#6b7280",
   primaryLight: "#3b82f6",
+  text: "#ffffff",
+  subText: "#aaaaaa",
+  header: "#121212",
+  tab: "#121212",
+  border: "#222222",
 };
 export type ThemeType = typeof lightTheme;
