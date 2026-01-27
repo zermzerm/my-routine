@@ -12,6 +12,7 @@
 - Zustand
 - Async-storage
 - Dayjs
+- Datetimepicker
 
 ## 📦 설치 및 실행 방법
 

@@ -6,8 +6,6 @@ export default function SettingsScreen() {
   const {isDark, toggle} = useThemeStore();
   const theme = useTheme();
 
-  console.log(theme);
-
   return (
     <Container>
       <Row>

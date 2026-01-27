@@ -1,19 +1,29 @@
-import {Habit} from "@/types/Habit";
+import {Habit, Schedule} from "@/types/Habit";
+import dayjs from "dayjs";
 import styled from "styled-components/native";
 
 interface Props {
-  habit: Habit;
+  type: "habit" | "schedule";
+  habit?: Habit;
+  schedule?: Schedule;
   isEditMode: boolean;
   selected: boolean;
   onPress: () => void;
 }
 
-export default function HabitItem({habit, isEditMode, selected, onPress}: Props) {
+export default function HabitItem({type, habit, schedule, isEditMode, selected, onPress}: Props) {
+  const today = dayjs();
+
+  let Dday = 0;
+  if (type === "schedule" && schedule?.targetDate) {
+    Dday = dayjs(schedule.targetDate, "YYYY-MM-DD").diff(today, "day");
+  }
+
   return (
     <Item onPress={onPress} selected={selected} isEditMode={isEditMode}>
       {isEditMode && <Checkbox selected={selected} />}
-      <Title>{habit.title}</Title>
-      <Title>🔥 D+{habit.streak}</Title>
+      <Title>{type === "habit" ? habit?.title : schedule?.title}</Title>
+      <Title>🔥 D{type === "habit" ? "+" + habit?.streak : Dday === 0 ? "-day" : "-" + Dday}</Title>
     </Item>
   );
 }

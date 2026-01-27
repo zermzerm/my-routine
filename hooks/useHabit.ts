@@ -105,6 +105,7 @@ export function useHabit() {
   };
 
   return {
+    today,
     searchText,
     setSearchText,
     isEditMode,
