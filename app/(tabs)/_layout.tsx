@@ -8,7 +8,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          height: 70, // 탭 높이 키우기
+          height: 90, // 탭 높이 키우기
           backgroundColor: theme.tab,
           borderTopColor: theme.border,
         },

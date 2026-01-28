@@ -4,7 +4,7 @@ export default function SettingsScreen() {
   return (
     <Container>
       <Row>
-        <text>통계</text>
+        <Text>통계</Text>
       </Row>
     </Container>
   );
@@ -20,4 +20,8 @@ const Row = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+`;
+
+const Text = styled.Text`
+  color: ${({theme}) => theme.text};
 `;

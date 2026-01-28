@@ -2,11 +2,11 @@ import {Schedule} from "@/types/Habit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs from "dayjs";
 import {useFocusEffect} from "expo-router";
-import {useCallback, useMemo, useState} from "react";
+import {useCallback, useState} from "react";
 
 export function useSchedule() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
-  const [searchText, setSearchText] = useState("");
+  // const [searchText, setSearchText] = useState("");
 
   const loadSchedules = useCallback(() => {
     AsyncStorage.getItem("schedules").then((data) => {
@@ -30,15 +30,12 @@ export function useSchedule() {
     await AsyncStorage.setItem("schedules", JSON.stringify(next));
   };
 
-  const filteredSchedules = useMemo(() => {
-    return schedules.filter((s) => s.title.toLowerCase().includes(searchText.toLowerCase()));
-  }, [schedules, searchText]);
+  // const filteredSchedules = useMemo(() => {
+  //   return schedules.filter((s) => s.title.toLowerCase().includes(searchText.toLowerCase()));
+  // }, [schedules, searchText]);
 
   return {
     schedules,
-    filteredSchedules,
-    searchText,
-    setSearchText,
     addSchedule,
     reload: loadSchedules,
   };

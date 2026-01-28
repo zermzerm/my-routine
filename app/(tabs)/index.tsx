@@ -6,37 +6,73 @@ import HabitItem from "@/components/HabitItem";
 import PrimaryButton from "@/components/PrimaryButton";
 import {useHabit} from "@/hooks/useHabit";
 import {useSchedule} from "@/hooks/useSchedule";
+import {useBottomTabBarHeight} from "@react-navigation/bottom-tabs";
+import {useState} from "react";
 
 export default function HomeScreen() {
+  const [selectedHabitIds, setSelectedHabitIds] = useState<number[]>([]);
+  const [selectedScheduleIds, setSelectedScheduleIds] = useState<number[]>([]);
+  const tabBarHeight = useBottomTabBarHeight();
   const router = useRouter();
 
   const {
-    today,
-    searchText,
-    setSearchText,
+    habits,
     isEditMode,
     setIsEditMode,
-    filteredHabits,
     selectedIds,
     setSelectedIds,
     handlePressHabit,
     deleteSelectedHabits,
   } = useHabit();
 
-  const {
-    searchText: scheduleSearch,
-    setSearchText: setScheduleSearch,
-    filteredSchedules,
-  } = useSchedule();
+  const {schedules} = useSchedule();
 
   return (
-    <Container>
-      <PrimaryButton title="루틴 및 일정 추가" onPress={() => router.push("/add")} />
-
+    <Container contentContainerStyle={{paddingBottom: tabBarHeight + 16}}>
       <Section>
-        <SectionTitle>루틴</SectionTitle>
-        <SearchInput placeholder="루틴 검색" value={searchText} onChangeText={setSearchText} />
         <Header>
+          <SectionTitle>루틴</SectionTitle>
+          <ButtonContainer>
+            <PrimaryButton title="추가" onPress={() => router.push("/add")} size="small" />
+            {!isEditMode ? (
+              <ActionButton onPress={() => setIsEditMode(true)}>
+                <ActionText>삭제</ActionText>
+              </ActionButton>
+            ) : (
+              <ActionButton
+                onPress={() => {
+                  setIsEditMode(false);
+                  setSelectedIds([]);
+                }}
+              >
+                <ActionText edit={isEditMode}>취소</ActionText>
+              </ActionButton>
+            )}
+          </ButtonContainer>
+        </Header>
+
+        <FlatList
+          data={habits}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({item}) => (
+            <HabitItem
+              type="habit"
+              habit={item}
+              isEditMode={isEditMode}
+              selected={selectedIds.includes(item.id)}
+              onPress={() => handlePressHabit(item.id)}
+            />
+          )}
+        />
+      </Section>
+
+      {/* <Divider /> */}
+
+      {/* ===== 일정 영역 ===== */}
+      <Section>
+        <SectionTitle>일정</SectionTitle>
+        {/* <Header>
+          <PrimaryButton title="추가" onPress={() => router.push("/add")} size="small" />
           {!isEditMode ? (
             <ActionButton onPress={() => setIsEditMode(true)}>
               <ActionText>삭제</ActionText>
@@ -51,46 +87,9 @@ export default function HomeScreen() {
               <ActionText edit={isEditMode}>취소</ActionText>
             </ActionButton>
           )}
-        </Header>
-
+        </Header> */}
         <FlatList
-          data={filteredHabits}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({item}) => (
-            <HabitItem
-              type="habit"
-              habit={item}
-              isEditMode={isEditMode}
-              selected={selectedIds.includes(item.id)}
-              onPress={() => handlePressHabit(item.id)}
-            />
-          )}
-        />
-        {isEditMode && (
-          <DeleteBar>
-            <SelectedCount>{selectedIds.length}개 선택됨</SelectedCount>
-
-            <DeleteButton disabled={selectedIds.length === 0} onPress={deleteSelectedHabits}>
-              <DeleteButtonText>삭제하기</DeleteButtonText>
-            </DeleteButton>
-          </DeleteBar>
-        )}
-      </Section>
-
-      <Divider />
-
-      {/* ===== 일정 영역 ===== */}
-      <Section>
-        <SectionTitle>일정</SectionTitle>
-
-        <SearchInput
-          placeholder="일정 검색"
-          value={scheduleSearch}
-          onChangeText={setScheduleSearch}
-        />
-
-        <FlatList
-          data={filteredSchedules}
+          data={schedules}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({item}) => (
             <HabitItem
@@ -103,52 +102,68 @@ export default function HomeScreen() {
           )}
         />
       </Section>
+      {isEditMode && (
+        <DeleteBar>
+          <SelectedCount>{selectedIds.length}개 선택됨</SelectedCount>
+
+          <DeleteButton disabled={selectedIds.length === 0} onPress={deleteSelectedHabits}>
+            <DeleteButtonText>삭제하기</DeleteButtonText>
+          </DeleteButton>
+        </DeleteBar>
+      )}
     </Container>
   );
 }
 
-const Container = styled.View`
+const Container = styled.ScrollView`
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: flex-end;
+  flex: 1;
   gap: 25px;
   padding: 16px;
   background-color: ${({theme}) => theme.background};
 `;
 
 const Section = styled.View`
-  flex: 1;
   gap: 12px;
+  padding-bottom: 20px;
+`;
+
+const Header = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+`;
+
+const ButtonContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 `;
 
 const Divider = styled.View`
   height: 1px;
   background-color: #8b8b8b;
-  margin: 8px 0;
   opacity: 0.6;
-  margin: 0 -16px;
+  margin: 16px -16px;
 `;
 
 const SectionTitle = styled.Text`
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   margin-bottom: 8px;
   color: ${({theme}) => theme.text};
 `;
 
-const Header = styled.View`
-  flex-direction: row;
-  justify-content: flex-end;
-`;
-
 const ActionButton = styled.TouchableOpacity`
-  height: 48px;
-  width: 150px;
-  padding: 12px;
+  height: 37px;
+  width: 100px;
   border-radius: 8px;
-  align-items: center;
   background-color: ${({theme}) => theme.primary};
+  justify-content: center;
+  align-items: center;
 `;
 
 const ActionText = styled.Text<{edit?: boolean}>`

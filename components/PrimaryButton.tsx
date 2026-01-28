@@ -16,11 +16,12 @@ export default function PrimaryButton({title, onPress, size, disabled = false}: 
 }
 
 const Button = styled.TouchableOpacity<{size?: "small" | "large"; disabled?: boolean}>`
-  padding: 12px;
+  width: ${({size}) => (size === "small" ? "100px" : "100%")};
+  height: 37px;
   background-color: ${({theme, disabled}) => (disabled ? theme.disabled : theme.primary)};
   border-radius: 8px;
+  justify-content: center;
   align-items: center;
-  width: ${({size}) => (size === "small" ? "150px" : "100%")};
 `;
 
 const ButtonText = styled.Text`

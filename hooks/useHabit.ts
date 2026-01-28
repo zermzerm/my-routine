@@ -9,7 +9,7 @@ export function useHabit() {
   // 저장된 모든 습관 목록
   const [habits, setHabits] = useState<Habit[]>([]);
   // 습관 검색 입력값
-  const [searchText, setSearchText] = useState("");
+  // const [searchText, setSearchText] = useState("");
   // 삭제 모드 여부 (true면 체크박스 + 삭제 바 표시)
   const [isEditMode, setIsEditMode] = useState(false);
   // 삭제 모드에서 선택된 습관 id 목록
@@ -18,9 +18,9 @@ export function useHabit() {
   const today = dayjs().format("YYYY-MM-DD");
 
   // 검색 기능
-  const filteredHabits = habits.filter((habit) =>
-    habit.title.toLowerCase().includes(searchText.toLowerCase()),
-  );
+  // const filteredHabits = habits.filter((habit) =>
+  //   habit.title.toLowerCase().includes(searchText.toLowerCase()),
+  // );
 
   const handlePressHabit = async (id: number) => {
     // 삭제 모드일 때는 바로 선택 토글
@@ -105,12 +105,9 @@ export function useHabit() {
   };
 
   return {
-    today,
-    searchText,
-    setSearchText,
+    habits,
     isEditMode,
     setIsEditMode,
-    filteredHabits,
     selectedIds,
     setSelectedIds,
     handlePressHabit,
