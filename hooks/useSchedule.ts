@@ -44,8 +44,6 @@ export function useSchedule() {
 
   return {
     schedules,
-    addSchedule,
-    reload: loadSchedules,
     deleteSchedules,
   };
 }

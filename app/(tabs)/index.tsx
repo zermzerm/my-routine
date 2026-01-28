@@ -53,8 +53,6 @@ export default function HomeScreen() {
     );
   };
 
-  console.log(selectedHabitIds, selectedScheduleIds);
-
   return (
     <Container contentContainerStyle={{paddingBottom: tabBarHeight + 16}}>
       <Section>
@@ -101,28 +99,9 @@ export default function HomeScreen() {
         />
       </Section>
 
-      {/* <Divider /> */}
-
       {/* ===== 일정 영역 ===== */}
       <Section>
         <SectionTitle>일정</SectionTitle>
-        {/* <Header>
-          <PrimaryButton title="추가" onPress={() => router.push("/add")} size="small" />
-          {!isEditMode ? (
-            <ActionButton onPress={() => setIsEditMode(true)}>
-              <ActionText>삭제</ActionText>
-            </ActionButton>
-          ) : (
-            <ActionButton
-              onPress={() => {
-                setIsEditMode(false);
-                setSelectedIds([]);
-              }}
-            >
-              <ActionText edit={isEditMode}>취소</ActionText>
-            </ActionButton>
-          )}
-        </Header> */}
         <FlatList
           data={schedules}
           keyExtractor={(item) => item.id.toString()}
@@ -145,7 +124,7 @@ export default function HomeScreen() {
       {isEditMode && (
         <DeleteBar>
           <SelectedCount>
-            루틴 {selectedHabitIds.length}개 + 일정 {selectedScheduleIds.length}개 선택됨
+            루틴 {selectedHabitIds.length}개, 일정 {selectedScheduleIds.length}개 선택됨
           </SelectedCount>
 
           <DeleteButton
@@ -188,12 +167,12 @@ const ButtonContainer = styled.View`
   gap: 10px;
 `;
 
-const Divider = styled.View`
-  height: 1px;
-  background-color: #8b8b8b;
-  opacity: 0.6;
-  margin: 16px -16px;
-`;
+// const Divider = styled.View`
+//   height: 1px;
+//   background-color: #8b8b8b;
+//   opacity: 0.6;
+//   margin: 16px -16px;
+// `;
 
 const SectionTitle = styled.Text`
   font-size: 20px;

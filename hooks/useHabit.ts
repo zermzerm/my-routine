@@ -12,8 +12,6 @@ export function useHabit() {
   // const [searchText, setSearchText] = useState("");
   // 삭제 모드 여부 (true면 체크박스 + 삭제 바 표시)
   const [isEditMode, setIsEditMode] = useState(false);
-  // 삭제 모드에서 선택된 습관 id 목록
-  // const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const today = dayjs().format("YYYY-MM-DD");
 
@@ -23,12 +21,6 @@ export function useHabit() {
   // );
 
   const handlePressHabit = async (id: number) => {
-    // 삭제 모드일 때는 바로 선택 토글
-    // if (isEditMode) {
-    //   setSelectedIds((prev) => (prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id]));
-    //   return;
-    // } else {
-    // D-day 초기화 확인
     Alert.alert("습관 초기화", "오늘 실패로 처리할까요?\nD+1부터 다시 시작합니다.", [
       {text: "취소", style: "cancel"},
       {
