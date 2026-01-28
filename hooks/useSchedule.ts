@@ -34,9 +34,18 @@ export function useSchedule() {
   //   return schedules.filter((s) => s.title.toLowerCase().includes(searchText.toLowerCase()));
   // }, [schedules, searchText]);
 
+  const deleteSchedules = async (ids: number[]) => {
+    if (ids.length === 0) return;
+
+    const updated = schedules.filter((s) => !ids.includes(s.id));
+    setSchedules(updated);
+    await AsyncStorage.setItem("schedules", JSON.stringify(updated));
+  };
+
   return {
     schedules,
     addSchedule,
     reload: loadSchedules,
+    deleteSchedules,
   };
 }

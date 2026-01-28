@@ -1,5 +1,5 @@
 import {useRouter} from "expo-router";
-import {FlatList} from "react-native";
+import {Alert, FlatList} from "react-native";
 import styled from "styled-components/native";
 
 import HabitItem from "@/components/HabitItem";
@@ -14,18 +14,46 @@ export default function HomeScreen() {
   const [selectedScheduleIds, setSelectedScheduleIds] = useState<number[]>([]);
   const tabBarHeight = useBottomTabBarHeight();
   const router = useRouter();
+  const {habits, isEditMode, setIsEditMode, handlePressHabit, deleteHabits} = useHabit();
 
-  const {
-    habits,
-    isEditMode,
-    setIsEditMode,
-    selectedIds,
-    setSelectedIds,
-    handlePressHabit,
-    deleteSelectedHabits,
-  } = useHabit();
+  const {schedules, deleteSchedules} = useSchedule();
 
-  const {schedules} = useSchedule();
+  const handleSelectedIds = (isHabit: boolean, id: number) => {
+    if (isHabit)
+      setSelectedHabitIds((prev) =>
+        !prev.includes(id) ? [...prev, id] : prev.filter((v) => v !== id),
+      );
+    else
+      setSelectedScheduleIds((prev) =>
+        !prev.includes(id) ? [...prev, id] : prev.filter((v) => v !== id),
+      );
+  };
+
+  const handleDelete = () => {
+    if (selectedHabitIds.length === 0 && selectedScheduleIds.length === 0) return;
+
+    Alert.alert(
+      "삭제",
+      `루틴 ${selectedHabitIds.length}개, 일정 ${selectedScheduleIds.length}개를 삭제할까요?`,
+      [
+        {text: "취소", style: "cancel"},
+        {
+          text: "삭제",
+          style: "destructive",
+          onPress: async () => {
+            await deleteHabits(selectedHabitIds);
+            await deleteSchedules(selectedScheduleIds);
+
+            setSelectedHabitIds([]);
+            setSelectedScheduleIds([]);
+            setIsEditMode(false);
+          },
+        },
+      ],
+    );
+  };
+
+  console.log(selectedHabitIds, selectedScheduleIds);
 
   return (
     <Container contentContainerStyle={{paddingBottom: tabBarHeight + 16}}>
@@ -42,7 +70,8 @@ export default function HomeScreen() {
               <ActionButton
                 onPress={() => {
                   setIsEditMode(false);
-                  setSelectedIds([]);
+                  setSelectedHabitIds([]);
+                  setSelectedScheduleIds([]);
                 }}
               >
                 <ActionText edit={isEditMode}>취소</ActionText>
@@ -59,8 +88,14 @@ export default function HomeScreen() {
               type="habit"
               habit={item}
               isEditMode={isEditMode}
-              selected={selectedIds.includes(item.id)}
-              onPress={() => handlePressHabit(item.id)}
+              selected={selectedHabitIds.includes(item.id)}
+              onPress={() => {
+                if (isEditMode) {
+                  handleSelectedIds(true, item.id);
+                  return;
+                }
+                handlePressHabit(item.id);
+              }}
             />
           )}
         />
@@ -96,17 +131,27 @@ export default function HomeScreen() {
               type="schedule"
               schedule={item}
               isEditMode={isEditMode}
-              selected={selectedIds.includes(item.id)}
-              onPress={() => handlePressHabit(item.id)}
+              selected={selectedScheduleIds.includes(item.id)}
+              onPress={() => {
+                if (isEditMode) {
+                  handleSelectedIds(false, item.id);
+                  return;
+                }
+              }}
             />
           )}
         />
       </Section>
       {isEditMode && (
         <DeleteBar>
-          <SelectedCount>{selectedIds.length}개 선택됨</SelectedCount>
+          <SelectedCount>
+            루틴 {selectedHabitIds.length}개 + 일정 {selectedScheduleIds.length}개 선택됨
+          </SelectedCount>
 
-          <DeleteButton disabled={selectedIds.length === 0} onPress={deleteSelectedHabits}>
+          <DeleteButton
+            disabled={selectedHabitIds.length + selectedScheduleIds.length === 0}
+            onPress={handleDelete}
+          >
             <DeleteButtonText>삭제하기</DeleteButtonText>
           </DeleteButton>
         </DeleteBar>
